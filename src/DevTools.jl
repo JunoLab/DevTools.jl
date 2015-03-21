@@ -1,5 +1,8 @@
 module DevTools
 
-# package code goes here
+using Blink, Media
+
+include("display/BlinkDisplay.jl")
+include("profile/profile.jl")
 
 end # module
