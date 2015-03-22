@@ -1,0 +1,11 @@
+.CodeMirror {
+  font-family: 'DejaVu Sans Mono', 'Consolas', monospace;
+  font-size: 9pt;
+  line-height: 1.5;
+  width: 100%;
+  height: 100%;
+}
+
+.CodeMirror-activeline-background {
+  background: rgba(0, 0, 100, 0.05);
+}
