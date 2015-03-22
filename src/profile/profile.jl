@@ -1,6 +1,6 @@
 module ProfileView
 
-using Compose, Lazy
+using Compose, Lazy, Media
 
 include("javascript.jl")
 include("data.jl")
@@ -75,5 +75,13 @@ function Base.writemime(io::IO, ::MIME"text/html", tree::ProfileTree)
     </div>
   """)
 end
+
+# BlinkDisplay integration
+
+using ..BlinkDisplay
+
+media(ProfileTree, Media.Graphical)
+BlinkDisplay.displaysize(::ProfileTree) = (480, 288)
+BlinkDisplay.displaytitle(::ProfileTree) = "Profile"
 
 end
