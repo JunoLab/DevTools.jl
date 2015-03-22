@@ -60,6 +60,9 @@ render(tree::ProfileTree; childscale = widthscale) =
           svgclass("root"))
 
 function Base.writemime(io::IO, ::MIME"text/html", tree::ProfileTree)
+  write(io, "<style>",
+        readall(Pkg.dir("DevTools", "res", "profile.css")),
+        "</style>")
   write(io, """
     <div class="profile">
       <div class="tooltip">
