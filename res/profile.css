@@ -28,9 +28,6 @@
 }
 
 /* Light */
-.CodeMirror-code .progress {
-  background: rgba(0, 0, 0, 0.05);
-}
 
 .profile .tooltip {
   background: white;
@@ -50,9 +47,6 @@
 }
 
 /* Dark */
-.julia-dark .CodeMirror-code .progress {
-  background: rgba(0, 0, 0, 0.2);
-}
 
 .julia-dark .profile .tooltip {
   background: #404444;

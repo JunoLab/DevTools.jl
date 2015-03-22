@@ -1,0 +1,30 @@
+/* Profiler */
+.CodeMirror-code .bar {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: -1;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.CodeMirror-code .bar.animated {
+  transition: all 0.2s linear;
+}
+
+.CodeMirror-code .bar.hidden {
+  width: 0 !important;
+  opacity: 0;
+}
+
+/* Light */
+.CodeMirror-code .bar {
+  background: rgba(255, 0, 0, 0.1);
+}
+
+/* Dark */
+.julia-dark .CodeMirror-code .bar {
+  background: rgba(0, 0, 0, 0.2);
+}

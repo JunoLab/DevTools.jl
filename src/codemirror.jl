@@ -1,11 +1,14 @@
-export Editor
+export Editor, viewfile
 
 type Editor
   w::Window
 end
 
-function Editor(value = "")
-  w = Window()
+Blink.msg(e::Editor, args...) = Blink.msg(e.w, args...)
+Blink.handlers(e::Editor) = Blink.handlers(e.w)
+
+function Editor(value = ""; title = "Julia")
+  w = Window(@d(:title=>title))
   for f in (["lib", "codemirror.js"],
             ["lib", "codemirror.css"],
             ["addon", "display", "rulers.js"],
@@ -14,11 +17,9 @@ function Editor(value = "")
     Blink.load!(w, Pkg.dir("DevTools", "deps", "codemirror-5.0", f...))
   end
 
-  for f in ["julia.js", "editor.css", "june.css"]
+  for f in ["julia.js", "editor.css", "june.css", "bars.js", "bars.css"]
     Blink.load!(w, Pkg.dir("DevTools", "res", f))
   end
-
-  sleep(0.1)
 
   body!(w, "", fade = false)
   @js_ w cm = CodeMirror(document.body,
@@ -30,5 +31,12 @@ function Editor(value = "")
                               :styleActiveLine=>true,
                               :rulers=>[80],
                               :showCursorWhenSelecting=>true)))
+  @js_ w Bars.hook(cm)
   return Editor(w)
 end
+
+viewfile(f) = Editor(readall(f), title = basename(f))
+
+setbars(e::Editor, ls) = @js_ e.w Bars.set(cm, $ls)
+barson(e::Editor) = @js_ e.w Bars.on(cm)
+barsoff(e::Editor) = @js_ e.w Bars.off(cm)
