@@ -1,14 +1,26 @@
 export Editor, editor
 
 type Editor
+  file
   w::Window
 end
 
 Blink.msg(e::Editor, args...) = Blink.msg(e.w, args...)
 Blink.handlers(e::Editor) = Blink.handlers(e.w)
 
-function Editor(value = ""; title = "Julia")
-  w = Window(@d(:title=>title))
+function handle_dirty(e::Editor)
+  @js_ e cm.on("changes", () -> Blink.msg("change", ["clean"=>cm.isClean()]))
+
+  handle(e, "change") do data
+    t = e.file == nothing ? "Julia" : basename(e.file)
+    data["clean"] || (t *= "*")
+    title(e.w, t)
+  end
+end
+
+function Editor(value = ""; file = nothing)
+  w = Window(@d(:title=>file == nothing ? "Julia" : basename(file)))
+  ed = Editor(file, w)
   for f in (["lib", "codemirror.js"],
             ["lib", "codemirror.css"],
             ["addon", "display", "rulers.js"],
@@ -32,11 +44,12 @@ function Editor(value = ""; title = "Julia")
                               :rulers=>[80],
                               :showCursorWhenSelecting=>true)))
   @js_ w Bars.hook(cm)
-  return Editor(w)
+  handle_dirty(ed)
+  return ed
 end
 
-editor(f) = Editor(readall(f), title = basename(f))
+editor(f) = Editor(readall(f), file = f)
 
-setbars(e::Editor, ls) = @js_ e.w Bars.set(cm, $ls)
-barson(e::Editor) = @js_ e.w Bars.on(cm)
-barsoff(e::Editor) = @js_ e.w Bars.off(cm)
+setbars(e::Editor, ls) = @js_ e Bars.set(cm, $ls)
+barson(e::Editor) = @js_ e Bars.on(cm)
+barsoff(e::Editor) = @js_ e Bars.off(cm)
