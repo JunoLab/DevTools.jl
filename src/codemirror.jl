@@ -18,9 +18,7 @@ function handle_dirty(e::Editor)
   end
 end
 
-function Editor(value = ""; file = nothing)
-  w = Window(@d(:title=>file == nothing ? "Julia" : basename(file)))
-  ed = Editor(file, w)
+function loadeditor(p::Page; value = "")
   for f in (["lib", "codemirror.js"],
             ["lib", "codemirror.css"],
             ["addon", "display", "rulers.js"],
@@ -29,15 +27,15 @@ function Editor(value = ""; file = nothing)
             ["addon", "dialog", "dialog.css"],
             ["addon", "dialog", "dialog.js"],
             ["keymap", "sublime.js"])
-    Blink.load!(w, Pkg.dir("DevTools", "deps", "codemirror-5.0", f...))
+    Blink.load!(p, Pkg.dir("DevTools", "deps", "codemirror-5.0", f...))
   end
 
   for f in ["julia.js", "editor.css", "june.css", "bars.js", "bars.css"]
-    Blink.load!(w, Pkg.dir("DevTools", "res", f))
+    Blink.load!(p, Pkg.dir("DevTools", "res", f))
   end
 
-  body!(w, "", fade = false)
-  @js_ w cm = CodeMirror(document.body,
+  body!(p, "", fade = false)
+  @js_ p cm = CodeMirror(document.body,
                          $(@d(:value => value,
                               :mode=>"julia2",
                               :theme=>"june",
@@ -46,7 +44,13 @@ function Editor(value = ""; file = nothing)
                               :styleActiveLine=>true,
                               :rulers=>[80],
                               :showCursorWhenSelecting=>true)))
-  @js_ w Bars.hook(cm)
+  @js_ p Bars.hook(cm)
+end
+
+function Editor(value = ""; file = nothing)
+  w = Window(@d(:title=>file == nothing ? "Julia" : basename(file)))
+  loadeditor(w.content, value = value)
+  ed = Editor(file, w)
   handle_dirty(ed)
   return ed
 end
