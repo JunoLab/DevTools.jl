@@ -31,8 +31,9 @@ displaytitle(x) = "Julia"
 
 function Media.render(view::WebView, x; options = @d())
   size = displaysize(x)
-  html = tohtml(x)
   w = @or(pinned(view), Window(@d(:width => size[1], :height => size[2])))
+  wait(w.content.cb, 10)
+  html = tohtml(x)
   front(w)
   body!(w.content, html)
   title(w, string(displaytitle(x), " (", id(w), ")",
