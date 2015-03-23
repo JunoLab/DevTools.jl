@@ -1,4 +1,4 @@
-export Editor, viewfile
+export Editor, editor
 
 type Editor
   w::Window
@@ -35,7 +35,7 @@ function Editor(value = ""; title = "Julia")
   return Editor(w)
 end
 
-edit(f) = Editor(readall(f), title = basename(f))
+editor(f) = Editor(readall(f), title = basename(f))
 
 setbars(e::Editor, ls) = @js_ e.w Bars.set(cm, $ls)
 barson(e::Editor) = @js_ e.w Bars.on(cm)
