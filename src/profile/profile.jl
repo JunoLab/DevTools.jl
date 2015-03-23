@@ -14,6 +14,8 @@ function basepath(file)
   return path
 end
 
+fullpath(file) = isabspath(file) ? file : basepath(file)
+
 maprange(x1, x2, y1, y2, p) = (p-x1)/(x2-x1)*(y2-y1)+y1
 
 fixedscale(node::ProfileTree) = ones(length(node.children))
@@ -21,12 +23,7 @@ fixedscale(node::ProfileTree) = ones(length(node.children))
 widthscale(node::ProfileTree) = map(w -> maprange(0, 1, 1/5, 1, w), childwidths(node))
 
 function fileattribute(li)
-  if isabspath(li.file)
-    svgattribute("data-file", "$(li.file):$(li.line)")
-  else
-    path = basepath(li.file)
-    svgattribute("data-file", "$path:$(li.line)")
-  end
+  svgattribute("data-file", "$(fullpath(li.file)):$(li.line)")
 end
 
 function render_(tree::ProfileTree; childscale = fixedscale, count = 0)

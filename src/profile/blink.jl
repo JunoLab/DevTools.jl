@@ -14,7 +14,7 @@ function Media.render(view::WebView, x::ProfileTree; options = @d())
     ed = editor(file)
     setcursor(ed, line)
     lines = DevTools.ProfileView.flatlines(x)
-    filter!((li, p) -> li.file == file, lines)
+    filter!((li, p) -> fullpath(li.file) == file, lines)
     setbars(ed, [["line"=>li.line, "percent"=>p] for (li, p) in lines])
     barson(ed)
   end
