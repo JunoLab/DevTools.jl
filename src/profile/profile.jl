@@ -4,6 +4,7 @@ using Compose, Lazy, Media
 
 include("javascript.jl")
 include("data.jl")
+include("blink.jl")
 
 githuburl(file, line) = "https://github.com/JuliaLang/julia/tree/$(Base.GIT_VERSION_INFO.commit)/base/$file#L$line"
 
@@ -75,13 +76,5 @@ function Base.writemime(io::IO, ::MIME"text/html", tree::ProfileTree)
     </div>
   """)
 end
-
-# BlinkDisplay integration
-
-using ..BlinkDisplay
-
-media(ProfileTree, Media.Graphical)
-BlinkDisplay.displaysize(::ProfileTree) = (480, 288)
-BlinkDisplay.displaytitle(::ProfileTree) = "Profile"
 
 end
