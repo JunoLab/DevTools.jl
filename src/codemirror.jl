@@ -25,6 +25,9 @@ function Editor(value = ""; file = nothing)
             ["lib", "codemirror.css"],
             ["addon", "display", "rulers.js"],
             ["addon", "selection", "active-line.js"],
+            ["addon", "search", "searchcursor.js"],
+            ["addon", "dialog", "dialog.css"],
+            ["addon", "dialog", "dialog.js"],
             ["keymap", "sublime.js"])
     Blink.load!(w, Pkg.dir("DevTools", "deps", "codemirror-5.0", f...))
   end
