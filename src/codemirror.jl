@@ -35,7 +35,7 @@ function Editor(value = ""; title = "Julia")
   return Editor(w)
 end
 
-viewfile(f) = Editor(readall(f), title = basename(f))
+edit(f) = Editor(readall(f), title = basename(f))
 
 setbars(e::Editor, ls) = @js_ e.w Bars.set(cm, $ls)
 barson(e::Editor) = @js_ e.w Bars.on(cm)
