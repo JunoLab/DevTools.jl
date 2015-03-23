@@ -1,4 +1,4 @@
-export pin, top
+export pin, top, WebView
 
 type WebView
   ws

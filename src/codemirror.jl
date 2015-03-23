@@ -1,4 +1,4 @@
-export Editor, editor
+export Editor, editor, setbars, barson, barsoff, setcursor
 
 type Editor
   file
@@ -56,3 +56,17 @@ editor(f) = Editor(readall(f), file = f)
 setbars(e::Editor, ls) = @js_ e Bars.set(cm, $ls)
 barson(e::Editor) = @js_ e Bars.on(cm)
 barsoff(e::Editor) = @js_ e Bars.off(cm)
+
+function centrecursor(ed::Editor)
+  @js_ ed begin
+    @var l = cm.getCursor().line
+    @var y = cm.charCoords(["line"=>l, "ch"=>0], "local").top
+    @var height = cm.getScrollerElement().offsetHeight
+    cm.scrollTo(0, y - height/2 + 55)
+  end
+end
+
+function setcursor(ed::Editor, line, ch = 0)
+  @js_ ed cm.setCursor($(line-1), $ch)
+  centrecursor(ed)
+end

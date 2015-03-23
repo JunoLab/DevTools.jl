@@ -1,6 +1,6 @@
 module ProfileView
 
-using Compose, Lazy, Media
+using Compose, Lazy
 
 include("javascript.jl")
 include("data.jl")
