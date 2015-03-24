@@ -25,7 +25,7 @@ function loadeditor(p::Page; value = "")
             "addon/selection/active-line.min.js"
             "addon/search/searchcursor.min.js"
             "keymap/sublime.min.js"]
-    load!(p, "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.1.0/$f")
+    load!(p, "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.0.0/$f")
   end
 
   for f in ["julia.js", "editor.css", "june.css", "bars.js", "bars.css"]
