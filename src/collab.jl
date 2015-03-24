@@ -20,4 +20,4 @@ end
   (Mux.wdefaults,
    Blink.ws_handler)
 
-rundemo() = serve(demo, demow, 8000)
+rundemo() = serve(demo, demow, 8080)
