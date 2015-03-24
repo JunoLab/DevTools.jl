@@ -68,10 +68,12 @@ function setcursor(ed, line, ch = 0)
   centrecursor(ed)
 end
 
+norm(key::String) = replace(key, r"\bc\b"i, OS_NAME == :Darwin ? "Cmd" : "Ctrl")
+
 function keymap(ed, key, res)
   @js_ ed begin
     @var map = CodeMirror.keyMap.blink
-    map[$key] = $res
+    map[$(norm(key))] = $res
     CodeMirror.normalizeKeyMap(map)
   end
 end
@@ -87,7 +89,7 @@ function handle_dirty(e::Editor)
 end
 
 function handle_save(ed::Editor)
-  keymap(ed, "Cmd-S", :(cm -> Blink.msg("save", ["code"=>cm.getValue()])))
+  keymap(ed, "C-S", :(cm -> Blink.msg("save", ["code"=>cm.getValue()])))
 
   handle(ed, "save") do data
     if ed.file != nothing && isfile(ed.file)
