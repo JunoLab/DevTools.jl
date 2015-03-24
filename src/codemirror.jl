@@ -19,19 +19,17 @@ function handle_dirty(e::Editor)
 end
 
 function loadeditor(p::Page; value = "")
-  for f in (["lib", "codemirror.js"],
-            ["lib", "codemirror.css"],
-            ["addon", "display", "rulers.js"],
-            ["addon", "selection", "active-line.js"],
-            ["addon", "search", "searchcursor.js"],
-            ["addon", "dialog", "dialog.css"],
-            ["addon", "dialog", "dialog.js"],
-            ["keymap", "sublime.js"])
-    Blink.load!(p, Pkg.dir("DevTools", "deps", "codemirror-5.0", f...))
+  for f in ["codemirror.min.js"
+            "codemirror.min.css"
+            "addon/display/rulers.min.js"
+            "addon/selection/active-line.min.js"
+            "addon/search/searchcursor.min.js"
+            "keymap/sublime.min.js"]
+    load!(p, "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.1.0/$f")
   end
 
   for f in ["julia.js", "editor.css", "june.css", "bars.js", "bars.css"]
-    Blink.load!(p, Pkg.dir("DevTools", "res", f))
+    load!(p, Pkg.dir("DevTools", "res", f))
   end
 
   body!(p, "", fade = false)
