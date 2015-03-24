@@ -2,7 +2,7 @@ module DevTools
 
 using Blink, Media, Lazy
 
-export BlinkDisplay
+export BlinkDisplay, pin, top
 
 include("display/BlinkDisplay.jl")
 include("profile/profile.jl")
