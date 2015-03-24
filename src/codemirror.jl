@@ -10,6 +10,8 @@ filetitle(e) = e.file == nothing ? "Julia" : basename(e.file)
 Blink.msg(e::Editor, args...) = Blink.msg(e.w, args...)
 Blink.handlers(e::Editor) = Blink.handlers(e.w)
 
+# I know, I know, this code is a mess.
+
 function loadeditor(p::Page; value = "", ver = "5.0.0")
   for f in ["codemirror.min.js"
             "codemirror.min.css"
@@ -37,6 +39,7 @@ function loadeditor(p::Page; value = "", ver = "5.0.0")
                               :rulers=>[80],
                               :showCursorWhenSelecting=>true)))
   @js_ p Bars.hook(cm)
+  handle_eval(p)
 end
 
 function Editor(value = ""; file = nothing)
@@ -96,6 +99,19 @@ function handle_save(ed::Editor)
       @js_ ed cm.markClean()
       title(ed.w, filetitle(ed))
       open(io -> write(io, data["code"]), ed.file, "w")
+    end
+  end
+end
+
+function handle_eval(ed)
+  keymap(ed, "C-Enter", :(cm -> Blink.msg("eval", ["code"=>cm.getSelection()])))
+
+  handle(ed, "eval") do data
+    try
+      result = eval(parse(data["code"]))
+      @js_ ed console.log($(sprint(show, result)))
+    catch e
+      @js_ ed console.log($(sprint(showerror, e, catch_backtrace())))
     end
   end
 end
