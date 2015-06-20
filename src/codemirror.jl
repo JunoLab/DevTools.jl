@@ -108,7 +108,7 @@ function handle_eval(ed)
 
   handle(ed, "eval") do data
     try
-      result = eval(parse(data["code"]))
+      result = eval(Main, parse(data["code"]))
       @js_ ed console.log($(sprint(show, result)))
     catch e
       @js_ ed console.log($(sprint(showerror, e, catch_backtrace())))
