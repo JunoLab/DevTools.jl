@@ -77,7 +77,7 @@ function keymap(ed, key, res)
   @js_ ed begin
     @var map = CodeMirror.keyMap.blink
     map[$(norm(key))] = $res
-    CodeMirror.normalizeKeyMap(map)
+#     CodeMirror.normalizeKeyMap(map)
   end
 end
 
@@ -104,7 +104,7 @@ function handle_save(ed::Editor)
 end
 
 function handle_eval(ed)
-  keymap(ed, "C-Enter", :(cm -> Blink.msg("eval", ["code"=>cm.getSelection()])))
+  keymap(ed, "Shift-Enter", :(cm -> Blink.msg("eval", ["code"=>cm.getSelection()])))
 
   handle(ed, "eval") do data
     try
