@@ -26,24 +26,24 @@ function loadeditor(p::Page; value = "", ver = "5.0.0")
     load!(p, Pkg.dir("DevTools", "res", f))
   end
 
-  @js_ p CodeMirror.keyMap.blink = ["fallthrough"=>"sublime"]
+  @js_ p CodeMirror.keyMap.blink = d("fallthrough"=>"sublime")
 
   body!(p, "", fade = false)
   @js_ p cm = CodeMirror(document.body,
-                         $(@d(:value => value,
-                              :mode=>"julia2",
-                              :theme=>"june",
-                              :keyMap=>"blink",
-                              :lineNumbers=>true,
-                              :styleActiveLine=>true,
-                              :rulers=>[80],
-                              :showCursorWhenSelecting=>true)))
+                         $(d(:value => value,
+                             :mode=>"julia2",
+                             :theme=>"june",
+                             :keyMap=>"blink",
+                             :lineNumbers=>true,
+                             :styleActiveLine=>true,
+                             :rulers=>[80],
+                             :showCursorWhenSelecting=>true)))
   @js_ p Bars.hook(cm)
   handle_eval(p)
 end
 
 function Editor(value = ""; file = nothing)
-  w = Window(@d(:title=>file == nothing ? "Julia" : basename(file)))
+  w = Window(d(:title=>file == nothing ? "Julia" : basename(file)))
   loadeditor(w.content, value = value)
   ed = Editor(file, w)
   handle_dirty(ed)
@@ -60,7 +60,7 @@ barsoff(e) = @js_ e Bars.off(cm)
 function centrecursor(ed)
   @js_ ed begin
     @var l = cm.getCursor().line
-    @var y = cm.charCoords(["line"=>l, "ch"=>0], "local").top
+    @var y = cm.charCoords(d("line"=>l, "ch"=>0), "local").top
     @var height = cm.getScrollerElement().offsetHeight
     cm.scrollTo(0, y - height/2 + 55)
   end
@@ -82,7 +82,7 @@ function keymap(ed, key, res)
 end
 
 function handle_dirty(e::Editor)
-  @js_ e cm.on("changes", () -> Blink.msg("change", ["clean"=>cm.isClean()]))
+  @js_ e cm.on("changes", () -> Blink.msg("change", d("clean"=>cm.isClean())))
 
   handle(e, "change") do data
     t = filetitle(e)
@@ -92,7 +92,7 @@ function handle_dirty(e::Editor)
 end
 
 function handle_save(ed::Editor)
-  keymap(ed, "C-S", :(cm -> Blink.msg("save", ["code"=>cm.getValue()])))
+  keymap(ed, "C-S", :(cm -> Blink.msg("save", d("code"=>cm.getValue()))))
 
   handle(ed, "save") do data
     if ed.file != nothing && isfile(ed.file)
@@ -104,7 +104,7 @@ function handle_save(ed::Editor)
 end
 
 function handle_eval(ed)
-  keymap(ed, "Shift-Enter", :(cm -> Blink.msg("eval", ["code"=>cm.getSelection()])))
+  keymap(ed, "Shift-Enter", :(cm -> Blink.msg("eval", d("code"=>cm.getSelection()))))
 
   handle(ed, "eval") do data
     try

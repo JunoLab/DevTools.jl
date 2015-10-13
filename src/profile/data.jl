@@ -2,17 +2,17 @@
 
 import Base.Profile: LineInfo
 
-typealias IP Uint
+typealias IP UInt
 typealias RawData Vector{IP}
 typealias Trace Vector{LineInfo}
 
-const lidict = (IP=>LineInfo)[]
+const lidict = Dict{IP,LineInfo}()
 lookup(ip::IP) = haskey(lidict, ip) ? lidict[ip] : (lidict[ip] = Profile.lookup(ip))
 lookup(ips::RawData) = map(lookup, ips)
 
 pruneC(trace::Trace) = filter(line->!line.fromC, trace)
 
-traces(data::Vector{Uint}) =
+traces(data::Vector{UInt}) =
   @>> split(data, 0, keep=false) map(lookup) map!(pruneC) map!(reverse) filter!(t->!isempty(t))
 
 # Tree Implementation
@@ -99,7 +99,7 @@ end
 
 flatlines(tree::ProfileTree; total = tree.data.count) =
   reduce(addmerge!,
-         [tree.data.line=>tree.data.count/total],
+         d(tree.data.line=>tree.data.count/total),
          map(t->flatlines(t, total = total), tree.children))
 
 function fetch()

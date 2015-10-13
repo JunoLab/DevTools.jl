@@ -49,8 +49,8 @@ const pinstr = "*"
 pintitle(w) = active(w) && title(w, string(title(w), pinstr))
 unpintitle(w) = active(w) && title(w, replace(title(w), pinstr, ""))
 
-pintitle(::Nothing) = nothing
-unpintitle(::Nothing) = nothing
+pintitle(::Void) = nothing
+unpintitle(::Void) = nothing
 
 function pin(w::Window)
   if pinned(view()) == w
@@ -67,7 +67,7 @@ end
 pin(id) = pin(byid(view(), id))
 pin() = pin(last(view()))
 
-function pin(::Nothing)
+function pin(::Void)
   if pinned(view()) ≠ nothing
     unpintitle(pinned(view()))
     view().pinned = nothing
@@ -80,6 +80,6 @@ top(w::Window) = (floating(w, !floating(w)); nothing)
 
 top(id) = top(byid(view(), id))
 
-top(::Nothing) = nothing
+top(::Void) = nothing
 
 top() = top(last(view()))

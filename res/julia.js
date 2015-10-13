@@ -43,9 +43,9 @@ CodeMirror.defineMode("julia2", function(config, parserConfig) {
                      'ccall'];
 
   var builtinList = ['true', 'false', 'NaN', 'Inf',
-                     'Int8', 'Uint8', 'Int16', 'Uint16',
-                     'Int32', 'Uint32', 'Int64', 'Uint64',
-                     'Int128', 'Uint128', 'Bool', 'Char',
+                     'Int8', 'UInt8', 'Int16', 'UInt16',
+                     'Int32', 'UInt32', 'Int64', 'UInt64',
+                     'Int128', 'UInt128', 'Bool', 'Char',
                      'Float16', 'Float32', 'Float64', 'Array',
                      'Vector', 'Matrix', 'String', 'UTF8String',
                      'ASCIIString'];

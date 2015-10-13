@@ -15,7 +15,7 @@ function Media.render(view::WebView, x::ProfileTree; options = @d())
     setcursor(ed, line)
     lines = DevTools.ProfileView.flatlines(x)
     filter!((li, p) -> fullpath(li.file) == file, lines)
-    setbars(ed, [["line"=>li.line, "percent"=>p] for (li, p) in lines])
+    setbars(ed, [d("line"=>li.line, "percent"=>p) for (li, p) in lines])
     barson(ed)
   end
 
@@ -24,7 +24,7 @@ function Media.render(view::WebView, x::ProfileTree; options = @d())
     @var bars = document.getElementsByClassName("file-link")
     Array.prototype.forEach.call(
       bars, function(bar)
-        Blink.click(bar, e -> Blink.msg("click", ["file"=>bar.getAttribute("data-file")]))
+        Blink.click(bar, e -> Blink.msg("click", d("file"=>bar.getAttribute("data-file"))))
       end)
   end
 end
