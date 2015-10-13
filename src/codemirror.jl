@@ -71,7 +71,7 @@ function setcursor(ed, line, ch = 0)
   centrecursor(ed)
 end
 
-norm(key::String) = replace(key, r"\bc\b"i, OS_NAME == :Darwin ? "Cmd" : "Ctrl")
+norm(key::AbstractString) = replace(key, r"\bc\b"i, OS_NAME == :Darwin ? "Cmd" : "Ctrl")
 
 function keymap(ed, key, res)
   @js_ ed begin
