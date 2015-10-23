@@ -79,7 +79,7 @@ childwidths(node::ProfileTree) =
   map(child -> child.data.count/node.data.count, node.children)
 
 function trimroot(tree::ProfileTree)
-  validchildren = tree.children[childwidths(tree) .> 0.1]
+  validchildren = tree.children[childwidths(tree) .> 0.99]
   length(validchildren) == 1 ? trimroot(validchildren[1]) : tree
 end
 
