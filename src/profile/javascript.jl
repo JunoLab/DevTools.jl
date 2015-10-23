@@ -4,10 +4,15 @@ using Compose
 
 # Scripts for individual frames
 
+function pkgpath(path)
+  m = match(r"([^/\\]+[/\\]src[/\\].*)$", path)
+  m == nothing ? basename(path) : m.captures[1]
+end
+
 framedata(line, proportion) =
   jscall("""
     data("lineinfo", {"func": "$(line.func)",
-                      "file": "$(line.file)",
+                      "file": "$(pkgpath(line.file))",
                       "line": "$(line.line)",
                       "percent": "$(@sprintf("%.2f", 100*proportion))"});
   """)
