@@ -24,7 +24,7 @@ WebView() = WebView(c(), nothing)
 const _display = WebView()
 view() = _display
 
-setdisplay(Media.Graphical, view())
+@init setdisplay(Media.Graphical, view())
 
 displaysize(x) = (500, 400)
 displaytitle(x) = "Julia"

@@ -1,6 +1,8 @@
+__precompile__()
+
 module DevTools
 
-using Blink, Media, Lazy
+using Blink, Media, Lazy, Requires
 
 export BlinkDisplay, pin, top, docs, profiler
 

@@ -1,6 +1,6 @@
 using Media, ..BlinkDisplay, ..DevTools, Blink, Lazy
 
-media(ProfileTree, Media.Graphical)
+@init media(ProfileTree, Media.Graphical)
 BlinkDisplay.displaysize(::ProfileTree) = (480, 288)
 BlinkDisplay.displaytitle(::ProfileTree) = "Profile"
 

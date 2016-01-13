@@ -1,6 +1,6 @@
 module ProfileView
 
-using Compose, Lazy
+using Compose, Lazy, Requires
 
 include("javascript.jl")
 include("data.jl")
