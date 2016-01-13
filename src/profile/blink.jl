@@ -10,7 +10,7 @@ function Media.render(view::WebView, x::ProfileTree; options = @d())
   handle(w, "click") do data
     path = split(data["file"], ":")
     file = join(path[1:end-1], ":")
-    line = parseint(path[end])
+    line = parse(Int, path[end])
     ed = editor(file)
     setcursor(ed, line)
     lines = DevTools.ProfileView.flatlines(x)
