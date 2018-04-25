@@ -1,6 +1,7 @@
 module ProfileView
 
 using Compose, Lazy, Requires
+import Requires.@init
 
 include("javascript.jl")
 include("data.jl")
@@ -23,7 +24,7 @@ fixedscale(node::ProfileTree) = ones(length(node.children))
 widthscale(node::ProfileTree) = map(w -> maprange(0, 1, 1/5, 1, w), childwidths(node))
 
 function fileattribute(li)
-  svgattribute("data-file", "$(fullpath(li.file)):$(li.line)")
+  svgattribute("data-file", "$(fullpath(string(li.file))):$(li.line)")
 end
 
 function render_(tree::ProfileTree; childscale = fixedscale, count = 0)
@@ -57,9 +58,9 @@ render(tree::ProfileTree; childscale = widthscale) =
           JS.mapzoom, JS.mapdrag, JS.nonscalingstroke, JS.tooltip, JS.settooltip,
           svgclass("root"))
 
-function Base.writemime(io::IO, ::MIME"text/html", tree::ProfileTree)
+function Base.show(io::IO, ::MIME"text/html", tree::ProfileTree)
   write(io, "<style>",
-        readall(Pkg.dir("DevTools", "res", "profile.css")),
+        read(Pkg.dir("DevTools", "res", "profile.css")),
         "</style>")
   write(io, """
     <div class="profile">

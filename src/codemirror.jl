@@ -51,7 +51,7 @@ function Editor(value = ""; file = nothing)
   return ed
 end
 
-editor(f) = Editor(readall(f), file = f)
+editor(f) = Editor(read(f, String), file = f)
 
 setbars(e, ls) = @js_ e Bars.set(cm, $ls)
 barson(e) = @js_ e Bars.on(cm)
@@ -71,7 +71,7 @@ function setcursor(ed, line, ch = 0)
   centrecursor(ed)
 end
 
-norm(key::AbstractString) = replace(key, r"\bc\b"i, OS_NAME == :Darwin ? "Cmd" : "Ctrl")
+norm(key::AbstractString) = replace(key, r"\bc\b"i, Sys.is_apple() ? "Cmd" : "Ctrl")
 
 function keymap(ed, key, res)
   @js_ ed begin

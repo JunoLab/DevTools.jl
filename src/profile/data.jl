@@ -1,16 +1,16 @@
 # Get traces
 
-import Base.Profile: LineInfo
+const LineInfo = StackTraces.StackFrame
 
 typealias IP UInt
 typealias RawData Vector{IP}
 typealias Trace Vector{LineInfo}
 
 const lidict = Dict{IP,LineInfo}()
-lookup(ip::IP) = haskey(lidict, ip) ? lidict[ip] : (lidict[ip] = Profile.lookup(ip))
+lookup(ip::IP) = haskey(lidict, ip) ? lidict[ip] : (lidict[ip] = StackTraces.lookup(ip)[end])
 lookup(ips::RawData) = map(lookup, ips)
 
-pruneC(trace::Trace) = filter(line->!line.fromC, trace)
+pruneC(trace::Trace) = filter(line->!line.from_c, trace)
 
 traces(data::Vector{UInt}) =
   @>> split(data, 0, keep=false) map(lookup) map!(pruneC) map!(reverse) filter!(t->!isempty(t))
@@ -84,7 +84,7 @@ function trimroot(tree::ProfileTree)
 end
 
 function sortchildren!(tree::ProfileTree)
-  sort!(map!(sortchildren!,tree.children), by = node->node.data.line.line)
+  sort!(map!(sortchildren!, tree.children, tree.children), by = node->node.data.line.line)
   tree
 end
 
