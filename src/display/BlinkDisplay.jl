@@ -1,6 +1,7 @@
 module BlinkDisplay
 
 using Blink, Media, Lazy, Requires
+import Requires.@init
 
 include("display.jl")
 include("objects.jl")

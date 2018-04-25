@@ -12,7 +12,7 @@ end
 framedata(line, proportion) =
   jscall("""
     data("lineinfo", {"func": "$(line.func)",
-                      "file": "$(pkgpath(line.file))",
+                      "file": "$(pkgpath(string(line.file)))",
                       "line": "$(line.line)",
                       "percent": "$(@sprintf("%.2f", 100*proportion))"});
   """)

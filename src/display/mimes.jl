@@ -1,9 +1,9 @@
 function tohtml(io::IO, m::MIME"text/html", x)
-  writemime(io, m, x)
+  show(io, m, x)
 end
 
 function tohtml(io::IO, m::MIME"text/plain", x)
-  writemime(io, m, x)
+  show(io, m, x)
 end
 
 function tohtml(io::IO, m::MIME"image/png", img)
@@ -13,12 +13,12 @@ function tohtml(io::IO, m::MIME"image/png", img)
 end
 
 function tohtml(io::IO, m::MIME"image/svg+xml", img)
-  writemime(io, m, img)
+  show(io, m, img)
 end
 
 function bestmime(val)
   for mime in ("text/html", "image/svg+xml", "image/png", "text/plain")
-    mimewritable(mime, val) && return MIME(symbol(mime))
+    mimewritable(mime, val) && return MIME(Symbol(mime))
   end
   error("Cannot display $val.")
 end
